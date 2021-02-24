@@ -36,9 +36,10 @@ class UI {
       this.showBalance();
     }
   }
+
   //show balance
   showBalance() {
-    const expense = this.totalExpence();
+    const expense = this.totalExpense();
     const total = parseInt(this.budgetAmount.textContent) - expense;
     this.balanceAmount.textContent = total;
 
@@ -84,6 +85,8 @@ class UI {
       this.itemID++;
       this.itemList.push(expense);
       this.addExpense(expense);
+
+      //expense = this.totalExpense(); //agrego para ver si funciona
     }
   }
 
@@ -94,7 +97,7 @@ class UI {
     div.innerHTML = `<div class="expense-item d-flex justify-content-between align-items-baseline">
 
   <h6 class="expense-title mb-0 text-uppercase list-item">${expense.title}</h6>
-  <h5 class="expense-amount mb-0 list-item">${expense.amount}</h5>
+  <h5 class="expense-amount mb-0 list-item">$${expense.amount}</h5>
 
   <div class="expense-icons list-item">
 
@@ -106,16 +109,28 @@ class UI {
    </a>
   </div>`;
 
-  this.expenseList.appendChild(div);
+    this.expenseList.appendChild(div);
 
   }
 
   // total expense
-  totalExpence() {
-    let total = 400;
+  totalExpense() {
+    let total = 0;
+
+    if (this.itemList.length > 0) {
+      console.log(this.itemList);
+      total = this.itemList.reduce(function (acc, curr) {
+        acc += curr.amount;
+        return acc;
+      }, 0)
+    }
+
+    this.expenseAmount.textContent = total;
     return total;
   }
 }
+
+// EVENT SILTENERS
 
 function eventListeners() {
   const budgetForm = document.getElementById('budget-form');
